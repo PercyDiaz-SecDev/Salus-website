@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlRoot">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salus Cyber Consulting, LLC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+/* ===================== TOKENS ===================== */
+:root{
+  --bg: #11151A;
+  --bg-deep: #0C0F11;
+  --bg-alt: #151C16;
+  --surface: #1A2019;
+  --surface-2: #1B2120;
+  --text: #F1EFE6;
+  --muted: #A7AFA3;
+  --muted-2: #7E8780;
+  --accent: #AE4530;
+  --accent-hover: #C2553D;
+  --sage: #8FA084;
+  --border: rgba(241,239,230,0.10);
+  --border-soft: rgba(241,239,230,0.06);
+  --max: 1180px;
+}
+
+*{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+body{
+  margin:0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+img,svg{ display:block; max-width:100%; }
+a{ color:inherit; }
+ul{ margin:0; padding:0; list-style:none; }
+button{ font-family:inherit; cursor:pointer; }
+h1,h2,h3,h4{ font-family:'Fraunces', serif; font-weight:600; margin:0; letter-spacing:-0.01em; }
+.mono{ font-family:'IBM Plex Mono', monospace; }
+.wrap{ max-width: var(--max); margin:0 auto; padding: 0 32px; }
+
+/* language toggling: hidden language is removed from layout */
+body.lang-en .t-es{ display:none !important; }
+body.lang-es .t-en{ display:none !important; }
+
+.eyebrow{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color: var(--sage);
+  margin-bottom:16px;
+  display:flex; align-items:center; gap:10px;
+}
+.eyebrow::before{
+  content:"";
+  width:6px; height:6px;
+  background: var(--accent);
+  border-radius:1px;
+  transform: rotate(45deg);
+  flex-shrink:0;
+}
+
+.section{ padding: 110px 0; }
+.section-alt{ background: var(--bg-alt); }
+@media (max-width:720px){ .section{ padding:72px 0; } }
+
+.section-head{ max-width: 640px; margin-bottom:56px; }
+.section-head h2{ font-size: clamp(28px,4vw,40px); line-height:1.15; }
+.section-head p{ color:var(--muted); margin-top:16px; font-size:17px; max-width:560px; }
+
+/* reveal-on-scroll */
+.reveal{ opacity:0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.visible{ opacity:1; transform:none; }
+@media (prefers-reduced-motion: reduce){
+  .reveal{ opacity:1; transform:none; transition:none; }
+  html{ scroll-behavior:auto; }
+}
+
+/* ===================== HEADER ===================== */
+.site-header{
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  background: rgba(17,21,26,0.86);
+  backdrop-filter: blur(10px);
+  border-bottom:1px solid var(--border-soft);
+}
+.site-header .wrap{
+  display:flex; align-items:center; justify-content:space-between;
+  height:76px;
+}
+.brand{ display:flex; align-items:center; gap:12px; text-decoration:none; }
+.brand-mark{ width:34px; height:34px; flex-shrink:0; }
+.brand-text{ display:flex; flex-direction:column; line-height:1.1; }
+.brand-text strong{ font-family:'Fraunces', serif; font-size:17px; letter-spacing:0.02em; font-weight:600; }
+.brand-text span{ font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:0.1em; color:var(--muted-2); text-transform:uppercase; }
+
+nav.primary-nav{ display:flex; align-items:center; gap:34px; }
+nav.primary-nav a{
+  text-decoration:none; font-size:14px; font-weight:500; color: var(--muted);
+  transition: color .2s ease;
+}
+nav.primary-nav a:hover{ color: var(--text); }
+
+.header-actions{ display:flex; align-items:center; gap:18px; }
+
+.lang-toggle{
+  display:flex; align-items:center; border:1px solid var(--border); border-radius:20px; overflow:hidden;
+  font-family:'IBM Plex Mono', monospace; font-size:12px;
+}
+.lang-toggle button{
+  background:none; border:none; color: var(--muted-2); padding:7px 13px; font-family:inherit; font-size:inherit;
+  letter-spacing:0.05em; transition: color .2s ease, background .2s ease;
+}
+.lang-toggle button.active{ background: var(--accent); color:#fff; }
+
+.btn{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:11px 22px; border-radius:3px; font-size:14px; font-weight:600;
+  text-decoration:none; border:1px solid transparent; transition: all .2s ease;
+  white-space:nowrap;
+}
+.btn-primary{ background: var(--accent); color:#fff; }
+.btn-primary:hover{ background: var(--accent-hover); }
+.btn-ghost{ border-color: var(--border); color: var(--text); }
+.btn-ghost:hover{ border-color: var(--sage); }
+
+.menu-toggle{
+  display:none; background:none; border:none; width:32px; height:32px;
+  position:relative;
+}
+.menu-toggle span{
+  position:absolute; left:6px; right:6px; height:1.5px; background:var(--text);
+  transition: all .25s ease;
+}
+.menu-toggle span:nth-child(1){ top:11px; }
+.menu-toggle span:nth-child(2){ top:18px; }
+.menu-toggle span:nth-child(3){ top:25px; }
+.menu-toggle.open span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+.menu-toggle.open span:nth-child(2){ opacity:0; }
+.menu-toggle.open span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-panel{
+  display:none; position:fixed; top:76px; left:0; right:0; bottom:0; z-index:99;
+  background: var(--bg); padding: 32px; overflow-y:auto;
+}
+.mobile-panel.open{ display:block; }
+.mobile-panel a{
+  display:block; padding:16px 0; border-bottom:1px solid var(--border-soft);
+  text-decoration:none; color:var(--text); font-size:18px; font-family:'Fraunces',serif;
+}
+.mobile-panel .btn{ margin-top:24px; width:100%; justify-content:center; }
+
+@media (max-width:880px){
+  nav.primary-nav{ display:none; }
+  .header-actions .btn-primary{ display:none; }
+  .menu-toggle{ display:block; }
+}
+
+/* ===================== HERO ===================== */
+.hero{
+  position:relative;
+  padding: 178px 0 120px;
+  overflow:hidden;
+}
+.hero .wrap{ position:relative; z-index:2; }
+.hero-watermark{
+  position:absolute; top:-60px; right:-120px; width:680px; height:680px;
+  opacity:0.18; z-index:1; pointer-events:none;
+}
+@media (max-width:880px){ .hero-watermark{ width:420px; height:420px; right:-160px; } }
+
+.hero h1{
+  font-size: clamp(34px, 5.4vw, 60px);
+  line-height:1.08;
+  max-width: 820px;
+  font-weight:600;
+}
+.hero p.lede{
+  color: var(--muted);
+  font-size:18px;
+  max-width:560px;
+  margin-top:24px;
+}
+.hero-ctas{ display:flex; gap:16px; margin-top:40px; flex-wrap:wrap; }
+.hero-meta{
+  margin-top:72px; display:flex; gap:48px; flex-wrap:wrap;
+  padding-top:32px; border-top:1px solid var(--border-soft);
+  max-width:760px;
+}
+.hero-meta div{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--muted-2); letter-spacing:0.05em; }
+.hero-meta strong{ display:block; font-family:'Fraunces',serif; font-size:22px; color:var(--text); font-weight:600; margin-top:6px; letter-spacing:0; }
+
+/* ===================== DEFINITION / PULLQUOTE ===================== */
+.pullquote{ max-width:840px; }
+.pullquote blockquote{
+  font-family:'Fraunces', serif;
+  font-size: clamp(22px, 2.6vw, 30px);
+  font-weight:500;
+  font-style:italic;
+  line-height:1.45;
+  color: var(--text);
+  margin:0;
+  position:relative;
+  padding-left:28px;
+  border-left: 2px solid var(--accent);
+}
+
+/* ===================== CARD GRIDS ===================== */
+.grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+@media (max-width:880px){ .grid-3{ grid-template-columns:1fr; } }
+
+.card{
+  background: var(--surface);
+  border:1px solid var(--border-soft);
+  border-radius:6px;
+  padding:30px 28px;
+}
+.card-icon{
+  width:42px; height:42px; border-radius:50%;
+  background: rgba(143,160,132,0.12);
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:20px;
+}
+.card-icon svg{ width:20px; height:20px; }
+.card h3{ font-size:19px; margin-bottom:10px; }
+.card p{ color:var(--muted); font-size:14.5px; margin:0; }
+
+.subhead-label{
+  font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--muted-2); margin-bottom:20px;
+}
+
+.foundation-block + .foundation-block{ margin-top:64px; }
+
+/* ===================== PROCESS / RISK FORMULA ===================== */
+.equation{
+  font-family:'IBM Plex Mono', monospace;
+  font-size: clamp(22px, 3.4vw, 38px);
+  font-weight:500;
+  letter-spacing:0.01em;
+  margin: 8px 0 18px;
+}
+.equation .x{ color: var(--accent); }
+.process-intro{ max-width:620px; color:var(--muted); margin-bottom:64px; }
+
+.steps{ display:grid; grid-template-columns:repeat(5,1fr); gap:0; position:relative; }
+@media (max-width:880px){ .steps{ grid-template-columns:1fr; gap:28px; } }
+.step{ position:relative; padding-right:24px; }
+.step-num{
+  font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--accent); margin-bottom:14px;
+  display:flex; align-items:center; gap:10px;
+}
+.step-num .dot{ width:9px; height:9px; border-radius:50%; background:var(--accent); flex-shrink:0; }
+.step-line{
+  position:absolute; top:9px; left:9px; right:24px; height:1px; background: var(--border);
+}
+.step:last-child .step-line{ display:none; }
+@media (max-width:880px){ .step-line{ display:none; } }
+.step h4{ font-size:17px; margin-bottom:8px; }
+.step p{ color:var(--muted); font-size:14px; margin:0; }
+
+/* ===================== SERVICES ===================== */
+.services-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+@media (max-width:1024px){ .services-grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:600px){ .services-grid{ grid-template-columns:1fr; } }
+.service-card{
+  background: var(--surface);
+  border:1px solid var(--border-soft);
+  border-radius:6px;
+  padding:30px 26px;
+  display:flex; flex-direction:column;
+}
+.service-card .num{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--accent); margin-bottom:18px; }
+.service-card h3{ font-size:19px; margin-bottom:18px; padding-bottom:18px; border-bottom:1px solid var(--border-soft); }
+.service-card ul li{
+  font-size:14px; color:var(--muted); padding:7px 0 7px 18px; position:relative;
+}
+.service-card ul li::before{
+  content:""; position:absolute; left:0; top:15px; width:6px; height:6px;
+  background: var(--sage); border-radius:1px; transform: rotate(45deg);
+}
+
+/* ===================== FRAMEWORKS ===================== */
+.fw-mark{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10.5px; font-weight:600; letter-spacing:-0.01em;
+  color: var(--accent);
+  background: rgba(174,69,48,0.14);
+  border-radius:50%;
+  width:50px; height:50px;
+  text-align:center;
+}
+.fw-tag{
+  font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.06em;
+  text-transform:uppercase; color: var(--sage); margin-bottom:10px;
+}
+.frameworks-note{
+  margin-top:32px; color:var(--muted-2); font-size:13px; max-width:640px;
+}
+
+/* ===================== CHALLENGES / SOLUTIONS ===================== */
+.cs-grid{ display:grid; grid-template-columns:1fr 1fr; gap:48px; }
+@media (max-width:880px){ .cs-grid{ grid-template-columns:1fr; gap:40px; } }
+.cs-col-label{
+  font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+  margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid var(--border);
+}
+.cs-col-label.challenge{ color:#C97A63; }
+.cs-col-label.solution{ color: var(--sage); }
+.cs-list li{
+  padding:16px 0; border-bottom:1px solid var(--border-soft);
+  font-size:15.5px; display:flex; gap:14px; align-items:flex-start;
+}
+.cs-list li::before{ content:"—"; color:var(--muted-2); flex-shrink:0; }
+.cs-list li:last-child{ border-bottom:none; }
+
+/* ===================== CONTACT ===================== */
+.contact-grid{ display:grid; grid-template-columns: 0.85fr 1.15fr; gap:64px; }
+@media (max-width:880px){ .contact-grid{ grid-template-columns:1fr; gap:48px; } }
+
+.contact-card{
+  background: var(--surface);
+  border:1px solid var(--border-soft);
+  border-radius:6px;
+  padding:32px;
+}
+.contact-avatar{
+  width:54px; height:54px; border-radius:50%;
+  background: var(--accent); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Fraunces',serif; font-size:20px; font-weight:600;
+  margin-bottom:20px;
+}
+.contact-card h3{ font-size:20px; margin-bottom:4px; }
+.contact-card .role{ color:var(--muted); font-size:14px; margin-bottom:18px; }
+.contact-card a.email{
+  font-family:'IBM Plex Mono', monospace; font-size:13.5px; color:var(--sage);
+  text-decoration:none; word-break:break-all;
+}
+.contact-badges{ display:flex; gap:10px; margin-top:24px; flex-wrap:wrap; }
+.badge{
+  font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.05em;
+  border:1px solid var(--border); border-radius:20px; padding:6px 12px; color:var(--muted);
+}
+
+.form-group{ margin-bottom:20px; }
+.form-row{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+@media (max-width:560px){ .form-row{ grid-template-columns:1fr; } }
+label{
+  display:block; font-size:12.5px; font-family:'IBM Plex Mono', monospace;
+  letter-spacing:0.04em; color:var(--muted-2); margin-bottom:8px; text-transform:uppercase;
+}
+input, textarea{
+  width:100%; background: var(--surface); border:1px solid var(--border);
+  border-radius:4px; padding:13px 14px; color:var(--text); font-family:'Inter',sans-serif;
+  font-size:15px;
+}
+input:focus, textarea:focus{ outline:2px solid var(--sage); outline-offset:1px; }
+textarea{ resize:vertical; min-height:120px; }
+.form-note{ font-size:13px; color:var(--muted-2); margin-top:14px; }
+
+/* ===================== FOOTER ===================== */
+footer{ background: var(--bg-deep); padding:64px 0 32px; border-top:1px solid var(--border-soft); }
+.footer-top{ display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap; margin-bottom:48px; }
+.footer-brand p{ color:var(--muted); max-width:340px; font-size:14.5px; margin-top:16px; }
+.footer-links{ display:flex; gap:48px; flex-wrap:wrap; }
+.footer-col h5{
+  font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--muted-2); margin-bottom:16px; font-weight:500;
+}
+.footer-col a{ display:block; color:var(--muted); text-decoration:none; font-size:14px; padding:6px 0; }
+.footer-col a:hover{ color:var(--text); }
+.footer-bottom{
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;
+  padding-top:28px; border-top:1px solid var(--border-soft);
+  font-size:12.5px; color:var(--muted-2); font-family:'IBM Plex Mono', monospace;
+}
+
+</style>
+</head>
+<body class="lang-en">
+
+<!-- ===================== HEADER ===================== -->
+<header class="site-header">
+  <div class="wrap">
+    <a href="#home" class="brand">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 2 L44 11 V25 C44 36 35.5 43 24 46 C12.5 43 4 36 4 25 V11 Z" stroke="#AE4530" stroke-width="2" fill="none"/>
+        <path d="M24 14 L33 27 L15 27 Z" stroke="#8FA084" stroke-width="1.6" fill="none"/>
+      </svg>
+      <span class="brand-text">
+        <strong>SALUS</strong>
+        <span>Cyber Consulting</span>
+      </span>
+    </a>
+
+    <nav class="primary-nav">
+      <a href="#home"><span class="t-en">Home</span><span class="t-es">Inicio</span></a>
+      <a href="#foundations"><span class="t-en">Approach</span><span class="t-es">Enfoque</span></a>
+      <a href="#services"><span class="t-en">Services</span><span class="t-es">Servicios</span></a>
+      <a href="#frameworks"><span class="t-en">Frameworks</span><span class="t-es">Marcos</span></a>
+      <a href="#process"><span class="t-en">Process</span><span class="t-es">Proceso</span></a>
+      <a href="#contact"><span class="t-en">Contact</span><span class="t-es">Contacto</span></a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang-toggle" role="group" aria-label="Language selector">
+        <button type="button" id="btnEN" class="active" aria-pressed="true">EN</button>
+        <button type="button" id="btnES" aria-pressed="false">ES</button>
+      </div>
+      <a href="#contact" class="btn btn-primary">
+        <span class="t-en">Schedule a call</span><span class="t-es">Agendar llamada</span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-panel" id="mobilePanel">
+  <a href="#home"><span class="t-en">Home</span><span class="t-es">Inicio</span></a>
+  <a href="#foundations"><span class="t-en">Approach</span><span class="t-es">Enfoque</span></a>
+  <a href="#services"><span class="t-en">Services</span><span class="t-es">Servicios</span></a>
+  <a href="#frameworks"><span class="t-en">Frameworks</span><span class="t-es">Marcos</span></a>
+  <a href="#process"><span class="t-en">Process</span><span class="t-es">Proceso</span></a>
+  <a href="#contact"><span class="t-en">Contact</span><span class="t-es">Contacto</span></a>
+  <a href="#contact" class="btn btn-primary">
+    <span class="t-en">Schedule a consultation</span><span class="t-es">Agendar una consulta</span>
+  </a>
+</div>
+
+<main>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" id="home">
+    <svg class="hero-watermark" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M24 2 L44 11 V25 C44 36 35.5 43 24 46 C12.5 43 4 36 4 25 V11 Z" stroke="#AE4530" stroke-width="0.8" fill="none"/>
+      <path d="M24 14 L33 27 L15 27 Z" stroke="#8FA084" stroke-width="0.6" fill="none"/>
+    </svg>
+    <div class="wrap">
+      <div class="eyebrow">
+        <span class="t-en">PERU &middot; UNITED STATES — CYBERSECURITY CONSULTING</span>
+        <span class="t-es">PERÚ &middot; ESTADOS UNIDOS — CONSULTORÍA EN CIBERSEGURIDAD</span>
+      </div>
+      <h1 class="reveal">
+        <span class="t-en">Security strategy built to protect what your organization can't afford to lose.</span>
+        <span class="t-es">Estrategia de seguridad diseñada para proteger lo que su organización no puede permitirse perder.</span>
+      </h1>
+      <p class="lede reveal">
+        <span class="t-en">We help organizations across LATAM and the U.S. assess risk, close gaps, and operate with confidence — through compliance, testing, architecture, and ongoing security management.</span>
+        <span class="t-es">Ayudamos a organizaciones en LATAM y EE. UU. a evaluar el riesgo, cerrar brechas y operar con confianza, mediante cumplimiento, pruebas, arquitectura y gestión continua de seguridad.</span>
+      </p>
+      <div class="hero-ctas reveal">
+        <a href="#contact" class="btn btn-primary">
+          <span class="t-en">Schedule a consultation</span><span class="t-es">Agendar una consulta</span>
+        </a>
+        <a href="#services" class="btn btn-ghost">
+          <span class="t-en">See our services →</span><span class="t-es">Ver nuestros servicios →</span>
+        </a>
+      </div>
+
+      <div class="hero-meta reveal">
+        <div>
+          <span class="t-en">REGIONS SERVED</span><span class="t-es">REGIONES ATENDIDAS</span>
+          <strong>LATAM &amp; U.S.</strong>
+        </div>
+        <div>
+          <span class="t-en">SERVICE AREAS</span><span class="t-es">ÁREAS DE SERVICIO</span>
+          <strong><span class="t-en">4 capability tracks</span><span class="t-es">4 líneas de servicio</span></strong>
+        </div>
+        <div>
+          <span class="t-en">ENGAGEMENT MODEL</span><span class="t-es">MODELO DE TRABAJO</span>
+          <strong><span class="t-en">Project &amp; ongoing</span><span class="t-es">Proyecto y continuo</span></strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== DEFINITION ===================== -->
+  <section class="section section-alt" id="definition">
+    <div class="wrap">
+      <div class="pullquote reveal">
+        <div class="eyebrow">
+          <span class="t-en">DEFINING THE TERM</span><span class="t-es">DEFINICIÓN DEL TÉRMINO</span>
+        </div>
+        <h2 style="font-size:clamp(26px,3.6vw,36px); margin-bottom:28px;">
+          <span class="t-en">What is cybersecurity?</span><span class="t-es">¿Qué es la seguridad cibernética?</span>
+        </h2>
+        <blockquote>
+          <span class="t-en">"The prevention of damage to, and the protection and restoration of, computers, communication systems and services, and the information they carry — to guarantee its availability, integrity, authenticity, confidentiality, and non-repudiation."</span>
+          <span class="t-es">"Prevención de daños, protección y restauración de computadoras, sistemas y servicios de comunicación, y la información que contienen, para garantizar su disponibilidad, integridad, autenticidad, confidencialidad y no repudio."</span>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOUNDATIONS ===================== -->
+  <section class="section" id="foundations">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="t-en">FOUNDATIONS</span><span class="t-es">FUNDAMENTOS</span></div>
+        <h2><span class="t-en">What we protect, and why it matters</span><span class="t-es">Qué protegemos, y por qué importa</span></h2>
+      </div>
+
+      <div class="foundation-block">
+        <div class="subhead-label reveal"><span class="t-en">THE THREE PILLARS</span><span class="t-es">LOS TRES PILARES</span></div>
+        <div class="grid-3 reveal">
+          <div class="card">
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L20 6V12C20 17 16.5 20.5 12 22C7.5 20.5 4 17 4 12V6L12 2Z" stroke="#8FA084" stroke-width="1.6"/></svg></div>
+            <h3><span class="t-en">Confidentiality</span><span class="t-es">Confidencialidad</span></h3>
+            <p><span class="t-en">Information is accessible only to those authorized to see it.</span><span class="t-es">La información solo es accesible para quienes están autorizados a verla.</span></p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12C4 7 7.5 4 12 4C16.5 4 20 7 20 12C20 17 16.5 20 12 20" stroke="#8FA084" stroke-width="1.6"/><path d="M12 8V12L15 14" stroke="#8FA084" stroke-width="1.6"/></svg></div>
+            <h3><span class="t-en">Integrity</span><span class="t-es">Integridad</span></h3>
+            <p><span class="t-en">Data stays accurate and unaltered, whether at rest or in transit.</span><span class="t-es">Los datos permanecen exactos y sin alteraciones, en reposo o en tránsito.</span></p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#8FA084" stroke-width="1.6"/><path d="M12 8V12L14.5 14.5" stroke="#8FA084" stroke-width="1.6"/></svg></div>
+            <h3><span class="t-en">Availability</span><span class="t-es">Disponibilidad</span></h3>
+            <p><span class="t-en">Systems and information are accessible whenever your business needs them.</span><span class="t-es">Los sistemas y la información están disponibles cuando su negocio los necesita.</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="foundation-block">
+        <div class="subhead-label reveal"><span class="t-en">WHAT NEEDS PROTECTION</span><span class="t-es">QUÉ NECESITA PROTECCIÓN</span></div>
+        <div class="grid-3 reveal">
+          <div class="card">
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="#8FA084" stroke-width="1.6"/><path d="M5 20C5 16 8 14 12 14C16 14 19 16 19 20" stroke="#8FA084" stroke-width="1.6"/></svg></div>
+            <h3><span class="t-en">People</span><span class="t-es">Personas</span></h3>
+            <p><span class="t-en">Clients and employees — often the first target of an attack.</span><span class="t-es">Clientes y empleados — con frecuencia el primer objetivo de un ataque.</span></p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M5 6C5 4.5 8 4 12 4C16 4 19 4.5 19 6V18C19 19.5 16 20 12 20C8 20 5 19.5 5 18V6Z" stroke="#8FA084" stroke-width="1.6"/><path d="M5 6C5 7.5 8 8 12 8C16 8 19 7.5 19 6" stroke="#8FA084" stroke-width="1.6"/></svg></div>
+            <h3><span class="t-en">Data &amp; information</span><span class="t-es">Datos e información</span></h3>
+            <p><span class="t-en">The records, intellectual property, and operational data your business runs on.</span><span class="t-es">Los registros, la propiedad intelectual y los datos operativos de su negocio.</span></p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="6" width="16" height="11" rx="1" stroke="#8FA084" stroke-width="1.6"/><path d="M9 20H15" stroke="#8FA084" stroke-width="1.6"/></svg></div>
+            <h3><span class="t-en">IT systems &amp; processes</span><span class="t-es">Equipo informático y procesos</span></h3>
+            <p><span class="t-en">The equipment and business processes that keep operations running.</span><span class="t-es">El equipo y los procesos de negocio que mantienen la operación en marcha.</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PROCESS ===================== -->
+  <section class="section section-alt" id="process">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="t-en">RISK MANAGEMENT</span><span class="t-es">GESTIÓN DE RIESGOS</span></div>
+        <h2><span class="t-en">Risk is a formula, not a guess</span><span class="t-es">El riesgo es una fórmula, no una suposición</span></h2>
+      </div>
+
+      <div class="equation reveal">
+        <span class="t-en">RISK = THREAT <span class="x">&times;</span> VULNERABILITY</span>
+        <span class="t-es">RIESGO = AMENAZA <span class="x">&times;</span> VULNERABILIDAD</span>
+      </div>
+      <p class="process-intro reveal">
+        <span class="t-en">Every asset, resource, or process in your organization carries some level of exposure. Our risk management process turns that exposure into a concrete plan.</span>
+        <span class="t-es">Todo activo, recurso o proceso en su organización conlleva cierto nivel de exposición. Nuestro proceso de gestión de riesgos convierte esa exposición en un plan concreto.</span>
+      </p>
+
+      <div class="steps reveal">
+        <div class="step">
+          <div class="step-line"></div>
+          <div class="step-num"><span class="dot"></span>01</div>
+          <h4><span class="t-en">Identify</span><span class="t-es">Identificar</span></h4>
+          <p><span class="t-en">Map the risk.</span><span class="t-es">Mapear el riesgo.</span></p>
+        </div>
+        <div class="step">
+          <div class="step-line"></div>
+          <div class="step-num"><span class="dot"></span>02</div>
+          <h4><span class="t-en">Analyze</span><span class="t-es">Analizar</span></h4>
+          <p><span class="t-en">Assess likelihood and impact.</span><span class="t-es">Evaluar probabilidad e impacto.</span></p>
+        </div>
+        <div class="step">
+          <div class="step-line"></div>
+          <div class="step-num"><span class="dot"></span>03</div>
+          <h4><span class="t-en">Evaluate</span><span class="t-es">Evaluar</span></h4>
+          <p><span class="t-en">Rank it against your priorities.</span><span class="t-es">Clasificarlo según sus prioridades.</span></p>
+        </div>
+        <div class="step">
+          <div class="step-line"></div>
+          <div class="step-num"><span class="dot"></span>04</div>
+          <h4><span class="t-en">Treat</span><span class="t-es">Tratar</span></h4>
+          <p><span class="t-en">Mitigate, transfer, accept, or avoid it.</span><span class="t-es">Mitigarlo, transferirlo, aceptarlo o evitarlo.</span></p>
+        </div>
+        <div class="step">
+          <div class="step-num"><span class="dot"></span>05</div>
+          <h4><span class="t-en">Monitor</span><span class="t-es">Supervisar</span></h4>
+          <p><span class="t-en">Review continuously as conditions change.</span><span class="t-es">Revisar continuamente conforme cambian las condiciones.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SERVICES ===================== -->
+  <section class="section" id="services">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="t-en">SERVICES</span><span class="t-es">SERVICIOS</span></div>
+        <h2><span class="t-en">Capabilities across the full security lifecycle</span><span class="t-es">Capacidades a lo largo de todo el ciclo de seguridad</span></h2>
+      </div>
+
+      <div class="services-grid reveal">
+        <div class="service-card">
+          <div class="num">01</div>
+          <h3><span class="t-en">Compliance</span><span class="t-es">Cumplimiento</span></h3>
+          <ul>
+            <li><span class="t-en">Business Continuity Plan</span><span class="t-es">Plan de Continuidad de Negocios</span></li>
+            <li><span class="t-en">Business Impact Assessment</span><span class="t-es">Evaluación de Impacto de Negocio</span></li>
+            <li><span class="t-en">PCI-DSS Compliance</span><span class="t-es">Cumplimiento PCI-DSS</span></li>
+            <li><span class="t-en">Cookie Audit</span><span class="t-es">Auditoría de Cookies</span></li>
+          </ul>
+        </div>
+        <div class="service-card">
+          <div class="num">02</div>
+          <h3><span class="t-en">Assessment</span><span class="t-es">Evaluación</span></h3>
+          <ul>
+            <li><span class="t-en">Penetration Testing</span><span class="t-es">Pruebas de Penetración</span></li>
+            <li><span class="t-en">Source Code Review</span><span class="t-es">Revisión de Código Fuente</span></li>
+            <li><span class="t-en">Vulnerability Assessment</span><span class="t-es">Evaluación de Vulnerabilidades</span></li>
+            <li><span class="t-en">Security Configuration Review</span><span class="t-es">Revisión de Configuración de Seguridad</span></li>
+          </ul>
+        </div>
+        <div class="service-card">
+          <div class="num">03</div>
+          <h3><span class="t-en">Design &amp; Implementation</span><span class="t-es">Diseño e Implementación</span></h3>
+          <ul>
+            <li><span class="t-en">Cybersecurity Framework</span><span class="t-es">Marco de Ciberseguridad</span></li>
+            <li><span class="t-en">Cloud Security Architecture</span><span class="t-es">Arquitectura de Seguridad en la Nube</span></li>
+            <li><span class="t-en">SIEM Implementation &amp; Integration</span><span class="t-es">Implementación e Integración de SIEM</span></li>
+            <li><span class="t-en">Identity &amp; Access Implementation Review</span><span class="t-es">Revisión de Implementación de Accesos e Identidad</span></li>
+          </ul>
+        </div>
+        <div class="service-card">
+          <div class="num">04</div>
+          <h3><span class="t-en">Operations</span><span class="t-es">Operación</span></h3>
+          <ul>
+            <li><span class="t-en">Outsourcing Services</span><span class="t-es">Servicios de Outsourcing</span></li>
+            <li><span class="t-en">Security Management Services</span><span class="t-es">Servicios de Administración de Seguridad</span></li>
+            <li><span class="t-en">Virtual CISO Services</span><span class="t-es">Servicio de CISO Virtual</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FRAMEWORKS & COMPLIANCE ===================== -->
+  <section class="section section-alt" id="frameworks">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="t-en">STANDARDS WE WORK WITH</span><span class="t-es">ESTÁNDARES CON LOS QUE TRABAJAMOS</span></div>
+        <h2><span class="t-en">Built on recognized frameworks</span><span class="t-es">Basado en marcos reconocidos</span></h2>
+        <p><span class="t-en">Our methodology aligns with the standards your auditors, regulators, and partners already expect.</span><span class="t-es">Nuestra metodología se alinea con los estándares que sus auditores, reguladores y socios ya esperan.</span></p>
+      </div>
+
+      <div class="grid-3 reveal">
+        <div class="card">
+          <div class="card-icon fw-mark">NIST</div>
+          <div class="fw-tag"><span class="t-en">RISK FRAMEWORK</span><span class="t-es">MARCO DE RIESGO</span></div>
+          <h3><span class="t-en">NIST Cybersecurity Framework</span><span class="t-es">Marco de Ciberseguridad del NIST</span></h3>
+          <p><span class="t-en">Program structure built around Identify, Protect, Detect, Respond, and Recover.</span><span class="t-es">Estructura de programa basada en Identificar, Proteger, Detectar, Responder y Recuperar.</span></p>
+        </div>
+        <div class="card">
+          <div class="card-icon fw-mark">ISO</div>
+          <div class="fw-tag"><span class="t-en">CERTIFICATION</span><span class="t-es">CERTIFICACIÓN</span></div>
+          <h3><span class="t-en">ISO/IEC 27001</span><span class="t-es">ISO/IEC 27001</span></h3>
+          <p><span class="t-en">International standard for an information security management system (ISMS).</span><span class="t-es">Estándar internacional para un sistema de gestión de seguridad de la información (SGSI).</span></p>
+        </div>
+        <div class="card">
+          <div class="card-icon fw-mark">PCI</div>
+          <div class="fw-tag"><span class="t-en">PAYMENT SECURITY</span><span class="t-es">SEGURIDAD DE PAGOS</span></div>
+          <h3><span class="t-en">PCI-DSS</span><span class="t-es">PCI-DSS</span></h3>
+          <p><span class="t-en">Required for any organization that stores, processes, or transmits cardholder data.</span><span class="t-es">Obligatorio para organizaciones que almacenan, procesan o transmiten datos de tarjetahabientes.</span></p>
+        </div>
+        <div class="card">
+          <div class="card-icon fw-mark">SOC2</div>
+          <div class="fw-tag"><span class="t-en">ASSURANCE</span><span class="t-es">ASEGURAMIENTO</span></div>
+          <h3>SOC 2</h3>
+          <p><span class="t-en">Trust services criteria covering security, availability, and confidentiality.</span><span class="t-es">Criterios de servicios de confianza para seguridad, disponibilidad y confidencialidad.</span></p>
+        </div>
+        <div class="card">
+          <div class="card-icon fw-mark">CIS</div>
+          <div class="fw-tag"><span class="t-en">CONTROLS</span><span class="t-es">CONTROLES</span></div>
+          <h3><span class="t-en">CIS Controls</span><span class="t-es">Controles CIS</span></h3>
+          <p><span class="t-en">Prioritized safeguards for defending against the most common attack patterns.</span><span class="t-es">Salvaguardas priorizadas para defenderse de los patrones de ataque más comunes.</span></p>
+        </div>
+        <div class="card">
+          <div class="card-icon fw-mark">HIPAA</div>
+          <div class="fw-tag"><span class="t-en">HEALTHCARE</span><span class="t-es">SALUD</span></div>
+          <h3>HIPAA</h3>
+          <p><span class="t-en">Safeguards for protected health information (PHI) and related systems.</span><span class="t-es">Salvaguardas para información de salud protegida (PHI) y sus sistemas asociados.</span></p>
+        </div>
+      </div>
+
+      <p class="frameworks-note reveal">
+        <span class="t-en">Replace this list with the specific frameworks and certifications your team actually holds or works against.</span>
+        <span class="t-es">Reemplace esta lista con los marcos y certificaciones específicos que su equipo realmente posee o utiliza.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================== CHALLENGES / SOLUTIONS ===================== -->
+  <section class="section" id="approach">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="t-en">WHY WORK WITH US</span><span class="t-es">POR QUÉ TRABAJAR CON NOSOTROS</span></div>
+        <h2><span class="t-en">We've seen these challenges before</span><span class="t-es">Ya hemos visto estos desafíos antes</span></h2>
+      </div>
+
+      <div class="cs-grid reveal">
+        <div>
+          <div class="cs-col-label challenge"><span class="t-en">COMMON CHALLENGES</span><span class="t-es">DESAFÍOS COMUNES</span></div>
+          <ul class="cs-list">
+            <li><span class="t-en">Not enough qualified cybersecurity staff</span><span class="t-es">Personal calificado insuficiente en seguridad cibernética</span></li>
+            <li><span class="t-en">Limited internal IT capacity</span><span class="t-es">Capacidad interna de TI limitada</span></li>
+            <li><span class="t-en">Constrained security budget</span><span class="t-es">Presupuesto de seguridad limitado</span></li>
+          </ul>
+        </div>
+        <div>
+          <div class="cs-col-label solution"><span class="t-en">OUR APPROACH</span><span class="t-es">NUESTRO ENFOQUE</span></div>
+          <ul class="cs-list">
+            <li><span class="t-en">Know and accept your current risk</span><span class="t-es">Conocer y aceptar el riesgo actual</span></li>
+            <li><span class="t-en">Set clear priorities</span><span class="t-es">Establecer prioridades claras</span></li>
+            <li><span class="t-en">Understand your organization's risk tolerance</span><span class="t-es">Comprender la tolerancia al riesgo de la organización</span></li>
+            <li><span class="t-en">Follow through on the plan, with stakeholder support</span><span class="t-es">Cumplir el plan, con el respaldo de las partes interesadas</span></li>
+            <li><span class="t-en">Treat security as an investment, not an expense</span><span class="t-es">Tratar la seguridad como una inversión, no un gasto</span></li>
+            <li><span class="t-en">Plan strategically for technology renewal</span><span class="t-es">Planificar estratégicamente la renovación tecnológica</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section class="section" id="contact">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="t-en">GET IN TOUCH</span><span class="t-es">CONTÁCTENOS</span></div>
+        <h2><span class="t-en">Let's talk about your security strategy</span><span class="t-es">Hablemos sobre su estrategia de seguridad</span></h2>
+        <p><span class="t-en">Tell us about your organization and we'll follow up to schedule a consultation.</span><span class="t-es">Cuéntenos sobre su organización y le responderemos para agendar una consulta.</span></p>
+      </div>
+
+      <div class="contact-grid reveal">
+        <div class="contact-card">
+          <div class="contact-avatar">PD</div>
+          <h3>Percy Diaz</h3>
+          <div class="role"><span class="t-en">Cybersecurity Professional &middot; SME, LATAM &amp; U.S.</span><span class="t-es">Profesional en Ciberseguridad &middot; Experto, LATAM y EE. UU.</span></div>
+          <a class="email" href="mailto:percy.diaz@saluscc.com">percy.diaz@saluscc.com</a>
+          <div class="contact-badges">
+            <span class="badge">🇵🇪 Peru</span>
+            <span class="badge">🇺🇸 United States</span>
+          </div>
+        </div>
+
+        <form class="contact-form" action="mailto:percy.diaz@saluscc.com" method="post" enctype="text/plain">
+          <div class="form-row">
+            <div class="form-group">
+              <label><span class="t-en">Name</span><span class="t-es">Nombre</span></label>
+              <input type="text" name="Name" required>
+            </div>
+            <div class="form-group">
+              <label><span class="t-en">Email</span><span class="t-es">Correo electrónico</span></label>
+              <input type="email" name="Email" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label><span class="t-en">Company</span><span class="t-es">Empresa</span></label>
+            <input type="text" name="Company">
+          </div>
+          <div class="form-group">
+            <label><span class="t-en">Message</span><span class="t-es">Mensaje</span></label>
+            <textarea name="Message" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <span class="t-en">Send message</span><span class="t-es">Enviar mensaje</span>
+          </button>
+          <p class="form-note">
+            <span class="t-en">This form opens your email client. Connect it to a form service (e.g. Formspree) for a no-reload submission.</span>
+            <span class="t-es">Este formulario abre su cliente de correo. Conéctelo a un servicio de formularios (p. ej. Formspree) para enviar sin recargar la página.</span>
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#home" class="brand">
+          <svg class="brand-mark" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 2 L44 11 V25 C44 36 35.5 43 24 46 C12.5 43 4 36 4 25 V11 Z" stroke="#AE4530" stroke-width="2" fill="none"/>
+            <path d="M24 14 L33 27 L15 27 Z" stroke="#8FA084" stroke-width="1.6" fill="none"/>
+          </svg>
+          <span class="brand-text">
+            <strong>SALUS</strong>
+            <span>Cyber Consulting</span>
+          </span>
+        </a>
+        <p>
+          <span class="t-en">Security strategy for organizations across LATAM and the United States.</span>
+          <span class="t-es">Estrategia de seguridad para organizaciones en LATAM y Estados Unidos.</span>
+        </p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h5><span class="t-en">NAVIGATE</span><span class="t-es">NAVEGAR</span></h5>
+          <a href="#services"><span class="t-en">Services</span><span class="t-es">Servicios</span></a>
+          <a href="#frameworks"><span class="t-en">Frameworks</span><span class="t-es">Marcos</span></a>
+          <a href="#process"><span class="t-en">Process</span><span class="t-es">Proceso</span></a>
+          <a href="#contact"><span class="t-en">Contact</span><span class="t-es">Contacto</span></a>
+        </div>
+        <div class="footer-col">
+          <h5><span class="t-en">CONTACT</span><span class="t-es">CONTACTO</span></h5>
+          <a href="mailto:percy.diaz@saluscc.com">percy.diaz@saluscc.com</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Salus Cyber Consulting, LLC. <span class="t-en">All rights reserved.</span><span class="t-es">Todos los derechos reservados.</span></span>
+      <div class="lang-toggle" role="group" aria-label="Language selector">
+        <button type="button" id="btnEN2" class="active" aria-pressed="true">EN</button>
+        <button type="button" id="btnES2" aria-pressed="false">ES</button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var body = document.body;
+  var html = document.getElementById('htmlRoot');
+  var enBtns = [document.getElementById('btnEN'), document.getElementById('btnEN2')];
+  var esBtns = [document.getElementById('btnES'), document.getElementById('btnES2')];
+
+  function setLang(lang){
+    body.classList.remove('lang-en','lang-es');
+    body.classList.add('lang-' + lang);
+    html.setAttribute('lang', lang);
+    enBtns.forEach(function(b){ b.classList.toggle('active', lang==='en'); b.setAttribute('aria-pressed', lang==='en'); });
+    esBtns.forEach(function(b){ b.classList.toggle('active', lang==='es'); b.setAttribute('aria-pressed', lang==='es'); });
+  }
+  enBtns.forEach(function(b){ b.addEventListener('click', function(){ setLang('en'); }); });
+  esBtns.forEach(function(b){ b.addEventListener('click', function(){ setLang('es'); }); });
+
+  // mobile menu
+  var menuToggle = document.getElementById('menuToggle');
+  var mobilePanel = document.getElementById('mobilePanel');
+  menuToggle.addEventListener('click', function(){
+    menuToggle.classList.toggle('open');
+    mobilePanel.classList.toggle('open');
+  });
+  mobilePanel.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      menuToggle.classList.remove('open');
+      mobilePanel.classList.remove('open');
+    });
+  });
+
+  // scroll reveal
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('visible'); });
+  }
+})();
+</script>
+
+</body>
+</html>
